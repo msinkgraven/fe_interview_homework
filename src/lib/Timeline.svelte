@@ -254,7 +254,12 @@ const handleTokenSubmit = () => {
 };
 
 const initializeTasks = async () => {
-    const endpoint = `https://api.plan.toggl.space/api/v6-rc1/${workspaceId}/tasks?since=${since}&until=${until}&short=true&team=${teamId}`;
+    // set start and end dates for fetching tasks as +/- 7 days from today
+    const from = moment().subtract(7, 'days').format('YYYY-MM-DD');
+    const to = moment().add(7, 'days').format('YYYY-MM-DD');
+
+    // Get the tasks from the Toggl API
+    const endpoint = `https://api.plan.toggl.space/api/v6-rc1/${workspaceId}/tasks?since=${from}&until=${to}&short=true&team=${teamId}`;
 
     // Get the auth token from the local storage
     authToken = localStorage.getItem('token');
