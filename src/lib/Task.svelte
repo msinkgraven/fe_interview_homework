@@ -152,9 +152,17 @@ const applyResize = () => {
 
     if (resize.side === 'left') {
         // get the day column that the mouse is over
-        task.start_date = moment(task.start_date).add(numDays, 'days').format('YYYY-MM-DD');
+        const newStartDate = moment(task.start_date).add(numDays, 'days').format('YYYY-MM-DD');
+        // if the new start date is the same or before the end date, update the start date
+        if (moment(newStartDate).isSameOrBefore(moment(task.end_date))) {
+            task.start_date = newStartDate;
+        }
     } else if (resize.side === 'right') {
-        task.end_date = moment(task.end_date).add(numDays, 'days').format('YYYY-MM-DD');
+        const newEndDate = moment(task.end_date).add(numDays, 'days').format('YYYY-MM-DD');
+        // if the new end date is the same or after the start date, update the end date
+        if (moment(newEndDate).isSameOrAfter(moment(task.start_date))) {
+            task.end_date = newEndDate;
+        }
     }
 
     tick().then(() => {
