@@ -4,14 +4,14 @@
 <main class="h-screen w-fit absolute">
     <!-- Head -->
     <!-- Scheduler -->
-    <div class="flex overflow-scroll relative pt-6 h-full w-full">
+    <div id="schedule" class="flex overflow-scroll relative pt-6 h-full w-full">
         <!-- Swim lane -->
         <div id="swimlane" class="absolute p-4 w-full z-0 top-[96px] { rows.length ? 'bg-gray-500/10' : ''}">
             <!-- <div id="swimlane" class="relative inline-block p-2 bg-slate-400/20 h-{12 * rows.length} w-full top-20 pointer-events-none"> -->
             {#each rows as row, r}
             <div id="task-row-{r}" class="h-10">
-                {#each row as task, t}
-                <Task id={task.id} name={task.name} start="{task.start_date}" end="{task.end_date}" row="{r}" />
+                {#each row as task}
+                <TaskComponent bind:task={task} row="{r}" />
                 {/each}
             </div>
             {/each}
@@ -60,6 +60,8 @@
 
 </main>
 
+<svelte:window on:mouseup={resizeListener} />
+
 <script lang="ts">
 import {
     onMount,
@@ -71,7 +73,7 @@ import {
 
 import moment from 'moment';
 
-import Task from './Task.svelte';
+import TaskComponent from './Task.svelte';
 
 // Date range to display
 const since = moment().subtract(21, 'days').format('YYYY-MM-DD');
@@ -121,8 +123,8 @@ const handleDrop = (event: DragEvent) => {
         // get the date from the id
         const date = targetElement.id.replace('day-col-', '');
         // get the task from the task array and update the start date
-        const taskIndex = tasks.findIndex((task) => task.id == taskId);
-
+        const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
+        // Calculate the difference in days between the new start date and the old start date
         const diff = moment(date).diff(moment(tasks[taskIndex].start_date), 'days');
 
         // Add the difference to the start date
@@ -137,6 +139,11 @@ const handleDrop = (event: DragEvent) => {
     }
 
     // refresh the tasks
+    refreshTasks();
+};
+
+// Listen for the resize event
+const resizeListener = () => {
     refreshTasks();
 };
 
@@ -270,8 +277,6 @@ const initializeTasks = async () => {
 };
 
 onMount(async () => {
-    // remove the auth token from the local storage for testing
-    localStorage.removeItem('token');
     initializeTasks();
 });
 </script>

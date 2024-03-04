@@ -50,3 +50,10 @@ interface Task {
     color: number,
     folder_id?: number,
 }
+
+interface Resizeable {
+    id: number | null;
+    offset: number;
+    side: 'left' | 'right' | null;
+    distanceMoved: number;
+}
