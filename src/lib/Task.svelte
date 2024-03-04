@@ -95,8 +95,12 @@ $: estimatedMinutes = () => {
     }
 
     const numDays = moment(task.end_date).diff(moment(task.start_date), 'days') + 1;
-    const dailyEstimatedMinutes = Math.round(task.estimated_minutes / (numDays - daysToIgnore));
 
+    // if the number of working days is 0, return an empty string
+    if (numDays <= daysToIgnore) {
+        return '';
+    }
+    const dailyEstimatedMinutes = Math.round(task.estimated_minutes / (numDays - daysToIgnore));
 
     // otherwise, return the estimated minutes divided by the number of days
     return `${dailyEstimatedMinutes}m daily`;

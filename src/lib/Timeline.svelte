@@ -60,7 +60,7 @@
 
 </main>
 
-<svelte:window on:mouseup={resizeListener} />
+<svelte:window on:mouseup={mouseupListener} />
 
 <script lang="ts">
 import {
@@ -143,7 +143,12 @@ const handleDrop = (event: DragEvent) => {
 };
 
 // Listen for the resize event
-const resizeListener = () => {
+const mouseupListener = () => {
+    // move the swimlane back to the front
+    const swimlane = document.getElementById('swimlane');
+    if (swimlane !== null) {
+        swimlane.style.zIndex = '1';
+    }
     refreshTasks();
 };
 
