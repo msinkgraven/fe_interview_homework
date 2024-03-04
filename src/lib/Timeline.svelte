@@ -100,7 +100,7 @@ const handleDragOver = (event: DragEvent) => {
 
     // ensure to only apply the background color to the day column
     if (targetElement.id.indexOf('day-') === 0) {
-        targetElement.classList.add('bg-slate-400/10');
+        targetElement.classList.add('bg-blue-400/10');
     }
 };
 
@@ -108,14 +108,14 @@ const handleDragOver = (event: DragEvent) => {
 const handleDragLeave = (event: DragEvent) => {
     event.preventDefault();
     const targetElement = event.target as HTMLElement;
-    targetElement.classList.remove('bg-slate-400/10');
+    targetElement.classList.remove('bg-blue-400/10');
 };
 
 // Handle the drop event
 const handleDrop = (event: DragEvent) => {
     event.preventDefault();
     const targetElement = event.target as HTMLElement;
-    targetElement.classList.remove('bg-slate-200');
+    targetElement.classList.remove('bg-blue-400/10');
 
     if (event.dataTransfer) {
         // get the task id from the dataTransfer
